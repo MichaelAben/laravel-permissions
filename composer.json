@@ -9,7 +9,6 @@
             "email": "m.aben@live.nl"
         }
     ],
-    "minimum-stability": "dev",
     "require": {},
     "autoload": {
         "psr-4": {
