@@ -1,0 +1,26 @@
+{
+    "name": "maben/laravel-permissions",
+    "description": "Laravel roles and permissions",
+    "type": "liberary",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Aben",
+            "email": "m.aben@live.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Maben\\Permissions\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Maben\\Permissions\\PermissionsProvider"
+            ]
+        }
+    }
+}
