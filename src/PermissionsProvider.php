@@ -13,6 +13,7 @@ class PermissionsProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__.'/Config/permissions.php', 'permissions');
     }
 
     /**
@@ -22,6 +23,13 @@ class PermissionsProvider extends ServiceProvider
      */
     public function boot()
     {
-        dd('yay');
+        $this->publishes([
+            __DIR__.'/Config/permissions.php' => config_path('permissions.php'),
+        ], 'maben/permissions');
+
+        $this->publishes([
+            __DIR__.'/Migrations/maben_permissions.php' =>
+            database_path('/migrations/' . date('Y_m_d_His') . '_maben_permissions.php'),
+        ], 'maben/permissions');
     }
 }
