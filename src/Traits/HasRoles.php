@@ -94,7 +94,7 @@ trait HasRoles
      * @param array $roles
      * @return bool
      */
-    public function hasAnyRoles(array $roles): bool
+    public function hasAnyRole(array $roles): bool
     {
         foreach($roles as $role) {
             if($this->hasRole($role)) {
