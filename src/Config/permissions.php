@@ -1,5 +1,6 @@
 <?php
 
+// Here you can set what table names to use for this package. In case of duplicate table names, change them!
 return [
     'tables' => [
         'roles' => 'roles',

@@ -3,6 +3,7 @@
 namespace Maben\Permissions;
 
 use Illuminate\Support\ServiceProvider;
+use Maben\Permissions\Commands\CreatePermission;
 
 class PermissionsProvider extends ServiceProvider
 {
@@ -31,5 +32,11 @@ class PermissionsProvider extends ServiceProvider
             __DIR__.'/Migrations/maben_permissions.php' =>
             database_path('/migrations/' . date('Y_m_d_His') . '_maben_permissions.php'),
         ], 'maben/permissions');
+        
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                CreatePermission::class,
+            ]);
+        }
     }
 }
