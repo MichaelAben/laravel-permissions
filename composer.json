@@ -20,7 +20,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Maben\\Permissions\\PermissionsProvider"
+                "MabenDev\\Permissions\\PermissionProvider"
             ]
         }
     }
