@@ -14,6 +14,8 @@ class PermissionModel extends Model
     {
         parent::boot();
 
+        if(!config('MabenDevPermissions.autoPermissionCheck')) return;
+
         $user = config('MabenDevPermissions.user')();
 
         self::creating(function ($model) use ($user) {

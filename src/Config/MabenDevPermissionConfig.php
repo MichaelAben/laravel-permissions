@@ -14,10 +14,7 @@ return [
     ],
 
     // Automatically listen to model events?
-    'autoEventListeners' => true,
-
-    // Automatically abort and return 203, if user does not have required permission?
-    'autoAbort' => true,
+    'autoPermissionCheck' => true,
 
     // User model
     'user' => function () {
