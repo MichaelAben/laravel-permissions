@@ -2,6 +2,7 @@
 
 namespace MabenDev\Permissions;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class PermissionProvider extends ServiceProvider
@@ -18,5 +19,7 @@ class PermissionProvider extends ServiceProvider
         ], 'MabenDev/permissions');
 
         $this->loadMigrationsFrom( __DIR__.'/Migrations/');
+
+        BladeExtentions::register();
     }
 }

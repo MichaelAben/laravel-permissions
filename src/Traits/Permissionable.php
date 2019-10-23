@@ -22,6 +22,28 @@ trait Permissionable
         return false;
     }
 
+    public function hasPermissionIn($permission)
+    {
+        $permission = $this->handleGivenPermission($permission);
+        return $this->permissions()->where('permission', 'LIKE', $permission . '%')->exists();
+    }
+
+    public function hasAnyPermission(array $permissions)
+    {
+        foreach($permissions as $permission) {
+            if($this->hasPermission($permission)) return true;
+        }
+        return false;
+    }
+
+    public function hasAllPermissions(array $permissions)
+    {
+        foreach($permissions as $permission) {
+            if(!$this->hasPermission($permission)) return false;
+        }
+        return true;
+    }
+
     public function hasDirectPermission($permission)
     {
         $permission = $this->handleGivenPermission($permission);
