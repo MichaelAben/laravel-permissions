@@ -6,6 +6,12 @@ use Illuminate\Console\Command;
 use MabenDev\Permissions\Models\Permission;
 use MabenDev\Permissions\Models\Role;
 
+/**
+ * Class Give
+ * @package MabenDev\Permissions\Commands\Permission
+ *
+ * @author Michael Aben
+ */
 class Give extends Command
 {
     /**

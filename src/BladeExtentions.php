@@ -6,8 +6,17 @@ namespace MabenDev\Permissions;
 
 use Illuminate\Support\Facades\Blade;
 
+/**
+ * Class BladeExtentions
+ * @package MabenDev\Permissions
+ *
+ * @author Michael Aben
+ */
 class BladeExtentions
 {
+    /**
+     *
+     */
     public static function register()
     {
         Blade::if('hasPermission', function ($permission) {

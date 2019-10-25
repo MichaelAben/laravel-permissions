@@ -6,10 +6,22 @@ namespace MabenDev\Permissions\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class PermissionModel
+ * @package MabenDev\Permissions\Models
+ *
+ * @author Michael Aben
+ */
 class PermissionModel extends Model
 {
+    /**
+     * @var array
+     */
     protected $permissionCheckExempt = [];
 
+    /**
+     *
+     */
     protected static function boot()
     {
         parent::boot();

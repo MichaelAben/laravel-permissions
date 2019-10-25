@@ -7,13 +7,28 @@ namespace MabenDev\Permissions\Traits;
 use MabenDev\Permissions\Models\Permission;
 use MabenDev\Permissions\Models\Role;
 
+/**
+ * Trait Roleable
+ * @package MabenDev\Permissions\Traits
+ *
+ * @author Michael Aben
+ */
 trait Roleable
 {
+    /**
+     * @return mixed
+     */
     public function roles()
     {
         return $this->morphToMany(Role::class, 'roleable', config('MabenDevPermissions.database.prefix') . 'roleable')->withTimestamps();
     }
 
+    /**
+     * @param $role
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function giveRole($role)
     {
         $tempRole = $role;
@@ -25,6 +40,12 @@ trait Roleable
         return $this->roles()->save($role);
     }
 
+    /**
+     * @param $role
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function hasRole($role)
     {
         $role = $this->handleGivenRole($role);
@@ -33,6 +54,12 @@ trait Roleable
         return false;
     }
 
+    /**
+     * @param  array  $roles
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function hasAnyRole(array $roles)
     {
         foreach($roles as $role) {
@@ -42,6 +69,12 @@ trait Roleable
         return false;
     }
 
+    /**
+     * @param  array  $roles
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function hasAllRoles(array $roles)
     {
         foreach($roles as $role) {
@@ -51,6 +84,12 @@ trait Roleable
         return true;
     }
 
+    /**
+     * @param $role
+     *
+     * @return string
+     * @throws \Exception
+     */
     protected function handleGivenRole($role)
     {
         if(!$role instanceof Role && !is_string($role)) throw new \Exception('Given $role must be string or instance of ' . Role::class);
@@ -58,6 +97,11 @@ trait Roleable
         return strtolower($role);
     }
 
+    /**
+     * @param $permission
+     *
+     * @return bool
+     */
     public function hasPermission($permission)
     {
         foreach($this->roles as $role) {
@@ -66,6 +110,11 @@ trait Roleable
         return false;
     }
 
+    /**
+     * @param $permission
+     *
+     * @return bool
+     */
     public function hasPermissionIn($permission)
     {
         foreach($this->roles as $role) {
@@ -74,6 +123,11 @@ trait Roleable
         return false;
     }
 
+    /**
+     * @param  array  $permissions
+     *
+     * @return bool
+     */
     public function hasAnyPermission(array $permissions)
     {
         foreach($this->roles as $role) {
@@ -82,6 +136,11 @@ trait Roleable
         return false;
     }
 
+    /**
+     * @param  array  $permissions
+     *
+     * @return bool
+     */
     public function hasAllPermissions(array $permissions)
     {
         $permissionsCheck = [];

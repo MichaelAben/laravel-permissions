@@ -4,6 +4,12 @@ namespace MabenDev\Permissions\Commands\Role;
 
 use Illuminate\Console\Command;
 
+/**
+ * Class Make
+ * @package MabenDev\Permissions\Commands\Role
+ *
+ * @author Michael Aben
+ */
 class Make extends Command
 {
     /**

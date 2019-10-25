@@ -5,13 +5,25 @@ namespace MabenDev\Permissions;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * Class PermissionProvider
+ * @package MabenDev\Permissions
+ *
+ * @author Michael Aben
+ */
 class PermissionProvider extends ServiceProvider
 {
+    /**
+     *
+     */
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/Config/MabenDevPermissionConfig.php', 'MabenDevPermissions');
     }
 
+    /**
+     *
+     */
     public function boot()
     {
         $this->publishes([

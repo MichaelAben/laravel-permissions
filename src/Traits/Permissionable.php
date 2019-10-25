@@ -6,13 +6,28 @@ namespace MabenDev\Permissions\Traits;
 
 use MabenDev\Permissions\Models\Permission;
 
+/**
+ * Trait Permissionable
+ * @package MabenDev\Permissions\Traits
+ *
+ * @author Michael Aben
+ */
 trait Permissionable
 {
+    /**
+     * @return mixed
+     */
     public function permissions()
     {
         return $this->morphToMany(Permission::class, 'permissionable', config('MabenDevPermissions.database.prefix') . 'permissionable')->withTimestamps();
     }
 
+    /**
+     * @param $permission
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function givePermission($permission)
     {
         $tempPermission = $permission;
@@ -22,8 +37,15 @@ trait Permissionable
         if($this->hasPermission($tempPermission)) return true;
 
         return $this->permissions()->save($permission);
+
     }
 
+    /**
+     * @param $permission
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function hasPermission($permission)
     {
         $permission = $this->handleGivenPermission($permission);
@@ -33,6 +55,12 @@ trait Permissionable
         return false;
     }
 
+    /**
+     * @param $permission
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function hasPermissionIn($permission)
     {
         $permission = $this->handleGivenPermission($permission);
@@ -40,6 +68,12 @@ trait Permissionable
         return $this->permissions()->where('permission', 'LIKE', $permission . '%')->exists();
     }
 
+    /**
+     * @param  array  $permissions
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function hasAnyPermission(array $permissions)
     {
         foreach($permissions as $permission) {
@@ -48,6 +82,12 @@ trait Permissionable
         return false;
     }
 
+    /**
+     * @param  array  $permissions
+     *
+     * @return bool
+     * @throws \Exception
+     */
     public function hasAllPermissions(array $permissions)
     {
         foreach($permissions as $permission) {
@@ -56,7 +96,13 @@ trait Permissionable
         return true;
     }
 
-    public function hasDirectPermission($permission)
+    /**
+     * @param $permission
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    protected function hasDirectPermission($permission)
     {
         $permission = $this->handleGivenPermission($permission);
 
@@ -64,7 +110,13 @@ trait Permissionable
         return false;
     }
 
-    public function hasPermissionWildCard($permission)
+    /**
+     * @param $permission
+     *
+     * @return bool
+     * @throws \Exception
+     */
+    protected function hasPermissionWildCard($permission)
     {
         $permission = $this->handleGivenPermission($permission);
 
@@ -82,6 +134,12 @@ trait Permissionable
         return false;
     }
 
+    /**
+     * @param $permission
+     *
+     * @return string
+     * @throws \Exception
+     */
     protected function handleGivenPermission($permission)
     {
         if(!$permission instanceof Permission && !is_string($permission)) throw new \Exception('Given $permission must be string or instance of ' . Permission::class);
