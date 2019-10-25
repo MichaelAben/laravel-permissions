@@ -15,7 +15,7 @@ class PermissionProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/Config/MabenDevPermissionConfig.php' => config_path('MabenDevPermissionConfig.php'),
+            __DIR__.'/Config/MabenDevPermissionConfig.php' => config_path('MabenDevPermissions.php'),
         ], 'MabenDev/permissions');
 
         $this->loadMigrationsFrom( __DIR__.'/Migrations/');
