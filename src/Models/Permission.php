@@ -27,7 +27,7 @@ class Permission extends PermissionModel
     {
         $collection = new Collection();
         foreach($this->permissionables as $permissionable) {
-            $collection->add($permissionable->getObject());
+            $collection->add($permissionable->getModel());
         }
         return $collection;
     }

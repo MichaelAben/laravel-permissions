@@ -24,7 +24,7 @@ class Role extends PermissionModel
     {
         $collection = new Collection();
         foreach($this->roleables as $roleable) {
-            $collection->add($roleable->getObject());
+            $collection->add($roleable->getModel());
         }
         return $collection;
     }
