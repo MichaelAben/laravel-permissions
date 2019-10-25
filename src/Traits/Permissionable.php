@@ -25,6 +25,7 @@ trait Permissionable
     public function hasPermissionIn($permission)
     {
         $permission = $this->handleGivenPermission($permission);
+        if($this->hasPermissionWildCard($permission)) return true;
         return $this->permissions()->where('permission', 'LIKE', $permission . '%')->exists();
     }
 

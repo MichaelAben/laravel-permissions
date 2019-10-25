@@ -3,6 +3,7 @@
 
 namespace MabenDev\Permissions\Models;
 
+use Illuminate\Support\Collection;
 use \MabenDev\Permissions\Traits\Permissionable;
 
 class Role extends PermissionModel
