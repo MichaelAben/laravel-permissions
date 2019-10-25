@@ -9,6 +9,11 @@ use \MabenDev\Permissions\Traits\Permissionable;
 class Role extends PermissionModel
 {
     use Permissionable;
+    
+    protected $fillable = [
+        'name',
+        'description',
+    ];
 
     public function getTable()
     {
@@ -27,5 +32,18 @@ class Role extends PermissionModel
             $collection->add($roleable->getModel());
         }
         return $collection;
+    }
+
+    public static function findOrCreate(string $name, string $description)
+    {
+        $newRole = Role::where('name', $name)->first();
+        if(!empty($newRole)) return $newRole;
+
+        $newRole = Role::create([
+            'name' => $name,
+            'description' => $description,
+        ]);
+
+        return $newRole;
     }
 }

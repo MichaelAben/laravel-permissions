@@ -30,6 +30,8 @@ return [
     'rolesModels' => [
         User::class,
     ],
+    
+    'userModel' => \App\Models\User::class,
 
     // User model, used to retrive a instance of the current logged in user (or any model that is uses permissions/roles)
     // If you use laravel default authentication you probably don't want to change this

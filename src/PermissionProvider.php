@@ -20,6 +20,15 @@ class PermissionProvider extends ServiceProvider
 
         $this->loadMigrationsFrom( __DIR__.'/Migrations/');
 
+        if($this->app->runningInConsole()) {
+            $this->commands([
+                \MabenDev\Permissions\Commands\Role\Make::class,
+                \MabenDev\Permissions\Commands\Role\Give::class,
+                \MabenDev\Permissions\Commands\Permission\Make::class,
+                \MabenDev\Permissions\Commands\Permission\Give::class,
+            ]);
+        }
+
         BladeExtentions::register();
     }
 }

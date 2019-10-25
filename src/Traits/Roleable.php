@@ -11,7 +11,18 @@ trait Roleable
 {
     public function roles()
     {
-        return $this->morphToMany(Role::class, 'roleable', config('MabenDevPermissions.database.prefix') . 'roleable');
+        return $this->morphToMany(Role::class, 'roleable', config('MabenDevPermissions.database.prefix') . 'roleable')->withTimestamps();
+    }
+
+    public function giveRole($role)
+    {
+        $tempRole = $role;
+        if(!$role instanceof Role) $role = Role::where('name', $tempRole)->first();
+        if(empty($role)) throw new \Exception('Could not find role (' . $tempRole . ')');
+
+        if($this->hasRole($tempRole)) return true;
+
+        return $this->roles()->save($role);
     }
 
     public function hasRole($role)

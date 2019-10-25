@@ -10,7 +10,18 @@ trait Permissionable
 {
     public function permissions()
     {
-        return $this->morphToMany(Permission::class, 'permissionable', config('MabenDevPermissions.database.prefix') . 'permissionable');
+        return $this->morphToMany(Permission::class, 'permissionable', config('MabenDevPermissions.database.prefix') . 'permissionable')->withTimestamps();
+    }
+
+    public function givePermission($permission)
+    {
+        $tempPermission = $permission;
+        if(!$permission instanceof Permission) $permission = Permission::where('permission', $tempPermission)->first();
+        if(empty($permission)) throw new \Exception('Could not find permission (' . $tempPermission . ')');
+
+        if($this->hasPermission($tempPermission)) return true;
+
+        return $this->permissions()->save($permission);
     }
 
     public function hasPermission($permission)

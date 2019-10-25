@@ -31,4 +31,17 @@ class Permission extends PermissionModel
         }
         return $collection;
     }
+
+    public static function findOrCreate(string $permission, string $description)
+    {
+        $newPermission = Permission::where('permission', $permission)->first();
+        if(!empty($newPermission)) return $newPermission;
+
+        $newPermission = Permission::create([
+            'permission' => $permission,
+            'description' => $description,
+        ]);
+
+        return $newPermission;
+    }
 }
