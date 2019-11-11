@@ -4,6 +4,7 @@ namespace MabenDev\Permissions;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use MabenDev\Permissions\Middleware\CheckPermission;
 
 /**
  * Class PermissionProvider
@@ -28,9 +29,11 @@ class PermissionProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__.'/Config/MabenDevPermissionConfig.php' => config_path('MabenDevPermissions.php'),
-        ], 'MabenDev/permissions');
+        ], 'config');
 
         $this->loadMigrationsFrom( __DIR__.'/Migrations/');
+
+        $this->app['router']->aliasMiddleware('CheckPermission', CheckPermission::class);
 
         if($this->app->runningInConsole()) {
             $this->commands([
@@ -39,8 +42,8 @@ class PermissionProvider extends ServiceProvider
                 \MabenDev\Permissions\Commands\Permission\Make::class,
                 \MabenDev\Permissions\Commands\Permission\Give::class,
             ]);
+        } else {
+            BladeExtentions::register();
         }
-
-        BladeExtentions::register();
     }
 }
