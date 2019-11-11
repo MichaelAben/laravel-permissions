@@ -3,6 +3,7 @@
 
 namespace MabenDev\Permissions\Models;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use \MabenDev\Permissions\Traits\Permissionable;
 
@@ -12,7 +13,7 @@ use \MabenDev\Permissions\Traits\Permissionable;
  *
  * @author Michael Aben
  */
-class Role extends PermissionModel
+class Role extends Model
 {
     use Permissionable;
 

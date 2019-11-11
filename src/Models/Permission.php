@@ -4,6 +4,7 @@
 namespace MabenDev\Permissions\Models;
 
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 /**
@@ -12,7 +13,7 @@ use Illuminate\Support\Collection;
  *
  * @author Michael Aben
  */
-class Permission extends PermissionModel
+class Permission extends Model
 {
     /**
      * @var array
