@@ -24,6 +24,23 @@ class Permission extends Model
     ];
 
     /**
+     * Permission constructor.
+     *
+     * @param  array  $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        self::deleting(function (Permission $permission) {
+            /** @var Permissionable $permissionable */
+            foreach($permission->permissionables as $permissionable) {
+                $permissionable->delete();
+            }
+        });
+    }
+
+    /**
      * @return string
      */
     public function getTable()

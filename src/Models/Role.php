@@ -26,11 +26,29 @@ class Role extends Model
     ];
 
     /**
+     * Role constructor.
+     *
+     * @param  array  $attributes
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        self::deleting(function (Role $role) {
+            /** @var Roleable $roleable */
+            foreach($role->roleables as $roleable) {
+                $roleable->delete();
+            }
+            $role->permissions()->detach();
+        });
+    }
+
+    /**
      * @return string
      */
     public function getTable()
     {
-        return config('MabenDevPermissions.database.prefix') . 'roles';
+        return config('MabenDevPermissions.database.prefix').'roles';
     }
 
     /**
@@ -47,7 +65,7 @@ class Role extends Model
     public function items()
     {
         $collection = new Collection();
-        foreach($this->roleables as $roleable) {
+        foreach ($this->roleables as $roleable) {
             $collection->add($roleable->getModel());
         }
         return $collection;
@@ -62,7 +80,9 @@ class Role extends Model
     public static function findOrCreate(string $name, string $description)
     {
         $newRole = Role::where('name', $name)->first();
-        if(!empty($newRole)) return $newRole;
+        if (!empty($newRole)) {
+            return $newRole;
+        }
 
         $newRole = Role::create([
             'name' => $name,
