@@ -45,5 +45,13 @@ class PermissionProvider extends ServiceProvider
         } else {
             BladeExtentions::register();
         }
+
+        if(config('MabenDevPermissions.override_gate')) {
+            Gate::after(function ($user, $ability) {
+                return Auth::user()->hasPermission($ability)
+                    ? Response::allow('You\'re allowed to do this action')
+                    : Response::deny('You don\'t have the required permission to do this action');
+            });
+        }
     }
 }
