@@ -13,4 +13,6 @@ return [
         // DO NOT CHANGE after you have run the migration!!!
         'prefix' => 'MabenDev_',
     ],
+    // This will override the gate of laravel, when using the can methods it will return Response::allow or deny
+    'override_gates' => true,
 ];
