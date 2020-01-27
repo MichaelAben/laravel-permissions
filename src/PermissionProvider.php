@@ -3,6 +3,7 @@
 namespace MabenDev\Permissions;
 
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use MabenDev\Permissions\Middleware\CheckPermission;
 
