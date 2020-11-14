@@ -6,6 +6,7 @@ namespace MabenDev\Permissions\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use \MabenDev\Permissions\Traits\Permissionable;
+use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
  * Class Role
@@ -15,7 +16,11 @@ use \MabenDev\Permissions\Traits\Permissionable;
  */
 class Role extends Model
 {
-    use Permissionable;
+    use Permissionable,
+        QueryCacheable;
+
+    public $cacheFor = 60*60*24; // in seconds
+    protected static $flushCacheOnUpdate = true;
 
     /**
      * @var array
