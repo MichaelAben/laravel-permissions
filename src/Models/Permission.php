@@ -5,8 +5,8 @@ namespace MabenDev\Permissions\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
-use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
  * Class Permission
@@ -16,11 +16,6 @@ use Rennokki\QueryCache\Traits\QueryCacheable;
  */
 class Permission extends Model
 {
-    use QueryCacheable;
-
-    public $cacheFor = 60*60*24; // in seconds
-    protected static $flushCacheOnUpdate = true;
-
     /**
      * @var array
      */
@@ -49,15 +44,15 @@ class Permission extends Model
     /**
      * @return string
      */
-    public function getTable()
+    public function getTable(): string
     {
         return config('MabenDevPermissions.database.prefix') . 'permissions';
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function permissionables()
+    public function permissionables(): HasMany
     {
         return $this->hasMany(Permissionable::class);
     }
@@ -65,7 +60,7 @@ class Permission extends Model
     /**
      * @return Collection
      */
-    public function items()
+    public function items(): Collection
     {
         $collection = new Collection();
         foreach($this->permissionables as $permissionable) {
@@ -78,18 +73,16 @@ class Permission extends Model
      * @param  string  $permission
      * @param  string  $description
      *
-     * @return mixed
+     * @return Permission
      */
-    public static function findOrCreate(string $permission, string $description)
+    public static function findOrCreate(string $permission, string $description): Permission
     {
         $newPermission = Permission::where('permission', $permission)->first();
         if(!empty($newPermission)) return $newPermission;
 
-        $newPermission = Permission::create([
+        return Permission::create([
             'permission' => $permission,
             'description' => $description,
         ]);
-
-        return $newPermission;
     }
 }

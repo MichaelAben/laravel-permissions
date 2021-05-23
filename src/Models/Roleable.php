@@ -5,6 +5,7 @@ namespace MabenDev\Permissions\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Rennokki\QueryCache\Traits\QueryCacheable;
 
 /**
@@ -15,31 +16,26 @@ use Rennokki\QueryCache\Traits\QueryCacheable;
  */
 class Roleable extends Model
 {
-    use QueryCacheable;
-
-    public $cacheFor = 60*60*24; // in seconds
-    protected static $flushCacheOnUpdate = true;
-
     /**
      * @return string
      */
-    public function getTable()
+    public function getTable(): string
     {
         return config('MabenDevPermissions.database.prefix') . 'roleable';
     }
 
     /**
-     *
+     * @return BelongsTo
      */
-    public function roles()
+    public function roles(): BelongsTo
     {
-        $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class);
     }
 
     /**
      * @return mixed
      */
-    public function getModel()
+    public function getModel(): mixed
     {
         return $this->attributes['roleable_type']::find($this->attributes['roleable_id']);
     }

@@ -5,7 +5,7 @@ namespace MabenDev\Permissions\Models;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Rennokki\QueryCache\Traits\QueryCacheable;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Class Permissionable
@@ -15,31 +15,26 @@ use Rennokki\QueryCache\Traits\QueryCacheable;
  */
 class Permissionable extends Model
 {
-    use QueryCacheable;
-
-    public $cacheFor = 60*60*24; // in seconds
-    protected static $flushCacheOnUpdate = true;
-
     /**
      * @return string
      */
-    public function getTable()
+    public function getTable(): string
     {
         return config('MabenDevPermissions.database.prefix') . 'permissionable';
     }
 
     /**
-     *
+     * @return BelongsTo
      */
-    public function permission()
+    public function permission(): BelongsTo
     {
-        $this->belongsTo(Permission::class);
+        return $this->belongsTo(Permission::class);
     }
 
     /**
      * @return mixed
      */
-    public function getModel()
+    public function getModel(): mixed
     {
         return $this->attributes['permissionable_type']::find($this->attributes['permissionable_id']);
     }

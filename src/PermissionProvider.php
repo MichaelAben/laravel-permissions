@@ -2,11 +2,13 @@
 
 namespace MabenDev\Permissions;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Blade;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use MabenDev\Permissions\Commands\Permission\Give;
+use MabenDev\Permissions\Commands\Permission\Make;
 use MabenDev\Permissions\Middleware\CheckPermission;
+use MabenDev\Permissions\Models\Permission;
 
 /**
  * Class PermissionProvider
@@ -16,17 +18,11 @@ use MabenDev\Permissions\Middleware\CheckPermission;
  */
 class PermissionProvider extends ServiceProvider
 {
-    /**
-     *
-     */
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/Config/MabenDevPermissionConfig.php', 'MabenDevPermissions');
     }
 
-    /**
-     *
-     */
     public function boot()
     {
         $this->publishes([
@@ -41,17 +37,17 @@ class PermissionProvider extends ServiceProvider
             $this->commands([
                 \MabenDev\Permissions\Commands\Role\Make::class,
                 \MabenDev\Permissions\Commands\Role\Give::class,
-                \MabenDev\Permissions\Commands\Permission\Make::class,
-                \MabenDev\Permissions\Commands\Permission\Give::class,
+                Make::class,
+                Give::class,
             ]);
         } else {
-            BladeExtentions::register();
+            BladeExtensions::register();
         }
 
         if(config('MabenDevPermissions.override_gate')) {
-            Gate::before(function ($user, $ability) {
+            Gate::before(function (Authenticatable|null $user, Permission|string $ability) {
                 if(method_exists($user, 'hasPermission')) {
-                    return Auth::user()->hasPermission($ability) ?: null;
+                    return $user->hasPermission($ability) ?: null;
                 }
                 return true;
             });

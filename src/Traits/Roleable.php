@@ -4,6 +4,8 @@
 namespace MabenDev\Permissions\Traits;
 
 
+use Exception;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use MabenDev\Permissions\Models\Permission;
 use MabenDev\Permissions\Models\Role;
 
@@ -16,9 +18,9 @@ use MabenDev\Permissions\Models\Role;
 trait Roleable
 {
     /**
-     * @return mixed
+     * @return MorphToMany
      */
-    public function roles()
+    public function roles(): MorphToMany
     {
         return $this->morphToMany(Role::class, 'roleable', config('MabenDevPermissions.database.prefix') . 'roleable')->withTimestamps();
     }
@@ -27,13 +29,13 @@ trait Roleable
      * @param $role
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
-    public function giveRole($role)
+    public function giveRole($role): bool
     {
         $tempRole = $role;
         if(!$role instanceof Role) $role = Role::where('name', $tempRole)->first();
-        if(empty($role)) throw new \Exception('Could not find role (' . $tempRole . ')');
+        if(empty($role)) throw new Exception('Could not find role (' . $tempRole . ')');
 
         if($this->hasRole($tempRole)) return true;
 
@@ -44,9 +46,9 @@ trait Roleable
      * @param $role
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
-    public function hasRole($role)
+    public function hasRole($role): bool
     {
         $role = $this->handleGivenRole($role);
 
@@ -58,9 +60,9 @@ trait Roleable
      * @param  array  $roles
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
-    public function hasAnyRole(array $roles)
+    public function hasAnyRole(array $roles): bool
     {
         foreach($roles as $role) {
             $role = $this->handleGivenRole($role);
@@ -73,9 +75,9 @@ trait Roleable
      * @param  array  $roles
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
-    public function hasAllRoles(array $roles)
+    public function hasAllRoles(array $roles): bool
     {
         foreach($roles as $role) {
             $role = $this->handleGivenRole($role);
@@ -88,11 +90,11 @@ trait Roleable
      * @param $role
      *
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function handleGivenRole($role)
+    protected function handleGivenRole($role): string
     {
-        if(!$role instanceof Role && !is_string($role)) throw new \Exception('Given $role must be string or instance of ' . Role::class);
+        if(!$role instanceof Role && !is_string($role)) throw new Exception('Given $role must be string or instance of ' . Role::class);
         if($role instanceof Role) $role = $role->getAttribute('name');
         return strtolower($role);
     }
@@ -102,7 +104,7 @@ trait Roleable
      *
      * @return bool
      */
-    public function hasPermission($permission)
+    public function hasPermission($permission): bool
     {
         foreach($this->roles as $role) {
             if($role->hasPermission($permission)) return true;
@@ -115,7 +117,7 @@ trait Roleable
      *
      * @return bool
      */
-    public function hasPermissionIn($permission)
+    public function hasPermissionIn($permission): bool
     {
         foreach($this->roles as $role) {
             if($role->hasPermissionIn($permission)) return true;
@@ -128,7 +130,7 @@ trait Roleable
      *
      * @return bool
      */
-    public function hasAnyPermission(array $permissions)
+    public function hasAnyPermission(array $permissions): bool
     {
         foreach($this->roles as $role) {
             if($role->hasAnyPermission($permissions)) return true;
@@ -141,7 +143,7 @@ trait Roleable
      *
      * @return bool
      */
-    public function hasAllPermissions(array $permissions)
+    public function hasAllPermissions(array $permissions): bool
     {
         $permissionsCheck = [];
         foreach($permissions as $permission) {

@@ -3,6 +3,7 @@
 namespace MabenDev\Permissions\Commands\Role;
 
 use Illuminate\Console\Command;
+use MabenDev\Permissions\Models\Role;
 
 /**
  * Class Make
@@ -30,12 +31,10 @@ class Make extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
-        $role = \MabenDev\Permissions\Models\Role::findOrCreate($this->argument('name'), $this->argument('description'));
+        $role = Role::findOrCreate($this->argument('name'), $this->argument('description'));
 
         $this->info('Role (' . $role->name . ') created');
     }

@@ -3,6 +3,7 @@
 namespace MabenDev\Permissions\Commands\Permission;
 
 use Illuminate\Console\Command;
+use MabenDev\Permissions\Models\Permission;
 
 /**
  * Class Make
@@ -30,12 +31,10 @@ class Make extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
-        $permission = \MabenDev\Permissions\Models\Permission::findOrCreate($this->argument('permission'), $this->argument('description'));
+        $permission = Permission::findOrCreate($this->argument('permission'), $this->argument('description'));
 
         $this->info('Permission (' . $permission->permission . ') created');
     }

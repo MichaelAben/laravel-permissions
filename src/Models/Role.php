@@ -4,9 +4,9 @@
 namespace MabenDev\Permissions\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
-use \MabenDev\Permissions\Traits\Permissionable;
-use Rennokki\QueryCache\Traits\QueryCacheable;
+use MabenDev\Permissions\Traits\Permissionable;
 
 /**
  * Class Role
@@ -16,11 +16,7 @@ use Rennokki\QueryCache\Traits\QueryCacheable;
  */
 class Role extends Model
 {
-    use Permissionable,
-        QueryCacheable;
-
-    public $cacheFor = 60*60*24; // in seconds
-    protected static $flushCacheOnUpdate = true;
+    use Permissionable;
 
     /**
      * @var array
@@ -51,15 +47,15 @@ class Role extends Model
     /**
      * @return string
      */
-    public function getTable()
+    public function getTable(): string
     {
         return config('MabenDevPermissions.database.prefix').'roles';
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function roleables()
+    public function roleables(): HasMany
     {
         return $this->hasMany(Roleable::class);
     }
@@ -67,7 +63,7 @@ class Role extends Model
     /**
      * @return Collection
      */
-    public function items()
+    public function items(): Collection
     {
         $collection = new Collection();
         foreach ($this->roleables as $roleable) {
@@ -80,20 +76,18 @@ class Role extends Model
      * @param  string  $name
      * @param  string  $description
      *
-     * @return mixed
+     * @return Role
      */
-    public static function findOrCreate(string $name, string $description)
+    public static function findOrCreate(string $name, string $description): Role
     {
         $newRole = Role::where('name', $name)->first();
         if (!empty($newRole)) {
             return $newRole;
         }
 
-        $newRole = Role::create([
+        return Role::create([
             'name' => $name,
             'description' => $description,
         ]);
-
-        return $newRole;
     }
 }

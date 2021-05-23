@@ -27,16 +27,13 @@ class MabenDevPermissionMigration extends Migration
 
         Schema::create(config('MabenDevPermissions.database.prefix') . 'permissionable', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('permissionable_type');
-            $table->unsignedBigInteger('permissionable_id');
+            $table->morphs('permissionable', 'permissionable_index');
             $table->unsignedBigInteger('permission_id');
             $table->timestamps();
 
             $table->foreign('permission_id')
                 ->references('id')
                 ->on(config('MabenDevPermissions.database.prefix') . 'permissions');
-
-            $table->unique(['permission_id', 'permissionable_type', 'permissionable_id'],'permissionable_unique');
         });
 
         Schema::create(config('MabenDevPermissions.database.prefix') . 'roles', function (Blueprint $table) {
@@ -48,16 +45,13 @@ class MabenDevPermissionMigration extends Migration
 
         Schema::create(config('MabenDevPermissions.database.prefix') . 'roleable', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('roleable_type');
-            $table->unsignedBigInteger('roleable_id');
+            $table->morphs('roleable', 'roleable_index');
             $table->unsignedBigInteger('role_id');
             $table->timestamps();
 
             $table->foreign('role_id')
                 ->references('id')
                 ->on(config('MabenDevPermissions.database.prefix') . 'roles');
-
-            $table->unique(['role_id', 'roleable_type', 'roleable_id'], 'rolable_unique');
         });
     }
 

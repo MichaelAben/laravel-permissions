@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Blade;
  *
  * @author Michael Aben
  */
-class BladeExtentions
+class BladeExtensions
 {
     /**
      *
