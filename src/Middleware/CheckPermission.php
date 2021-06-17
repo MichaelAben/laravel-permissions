@@ -35,7 +35,7 @@ class CheckPermission
         }
 
         if(!Auth::user()->hasPermission($permission)) {
-            abort(403, 'You don\'t have the required permission');
+            abort(403, "You don\'t have the required permission ($permission)");
         }
 
         return $next($request);
